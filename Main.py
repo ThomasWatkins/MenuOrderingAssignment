@@ -14,6 +14,6 @@ while True:
     print(event,values)
     if event in (sg.WINDOW_CLOSED, "Exit"):
         break
-    if event == "Convert to CSV":
+    if event == "Convert To CSV":
         sg.popup_error("Not Yet Implemented")
 window.close()
