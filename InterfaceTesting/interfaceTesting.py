@@ -7,10 +7,10 @@ app.geometry("600x480")
 app.resizable(0,0)
 
 #loading image data via PIl
-side_img_data = Image.open("InterfaceTesting\side-img.png")
-email_icon_data = Image.open("InterfaceTesting\email-icon.png")
-password_icon_data = Image.open("InterfaceTesting\password-icon.png")
-google_icon_ata = Image.open("InterfaceTesting\google-icon.png")
+side_img_data = Image.open("InterfaceTesting/side-img.png")
+email_icon_data = Image.open("InterfaceTesting/email-icon.png")
+password_icon_data = Image.open("InterfaceTesting/password-icon.png")
+google_icon_ata = Image.open("InterfaceTesting/google-icon.png")
 
 #turning PIL image data into CTkImages
 side_img = CTkImage(dark_image=side_img_data, light_image=side_img_data, size=(300, 480))
