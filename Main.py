@@ -16,7 +16,7 @@ while True:
     if event in (sg.WINDOW_CLOSED, "Exit"):
         break
     if event == "Convert To CSV":
-        sg.popup_error("Not Yet Implemented")
+        sg.popup_error("Not Yet Implemented", button_color="#AAAAAA")
     if event == "HELLO!":
         print("you pressed hello")
     if event == "submit":
