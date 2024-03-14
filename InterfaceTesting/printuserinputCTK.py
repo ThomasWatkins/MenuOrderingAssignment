@@ -7,8 +7,8 @@ app.resizable(1,1)
 def login_button():
     user_input = username_input.get()
     print(user_input)
-    textdisplay = CTkLabel(master=frame,text=user_input+",\nhello!", width=250, height=100, fg_color="#EbEbEb")
-    textdisplay.pack(anchor="w", pady=(25), padx=(35,20))
+    textdisplay = CTkLabel(master=frame,text=user_input+",\nhello!", width=250, height=100, fg_color="#EbEbEb", text_color="#abcdef")
+    textdisplay.pack(anchor="w", pady=(0), padx=(35,20))
 
 frame = CTkFrame(master=app, width=600, height=600, fg_color="#FFFFFF")
 frame.pack_propagate(0)
