@@ -7,8 +7,14 @@ app = CTk()
 app.geometry("900x800")
 app.resizable(0,0)
 
-placeholder_image = Image.open("InterfaceTesting\\food_placeholder.jpg")
-placeholder_image = CTkImage(dark_image=placeholder_image, light_image=placeholder_image, size=(200, 160))
+image1 = Image.open("ResturantGUI\\food_placeholder.jpg")
+image1 = CTkImage(dark_image=image1, light_image=image1, size=(200, 160))
+
+image2 = Image.open("ResturantGUI\\food_placeholder2.jpg")
+image2 = CTkImage(dark_image=image2, light_image=image2, size=(200, 160))
+
+image3 = Image.open("ResturantGUI\\food_placeholder3.jpg")
+image3 = CTkImage(dark_image=image3, light_image=image3, size=(200, 160))
 
 def view_order_history():
     print("order history button pressed")
@@ -41,12 +47,7 @@ menu_items.place(x=45,y=70)
 order_summary = CTkFrame(Main_menu, fg_color="#183540",bg_color="transparent", width=300, height=400, corner_radius=25)
 order_summary.place(x=580,y=70)
 
-menu_image1 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=placeholder_image)
-menu_image2 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=placeholder_image)
-menu_image3 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=placeholder_image)
-menu_image1.grid(row=2, column=1, pady=25)
-menu_image2.grid(row=3, column=1,pady=25)
-menu_image3.grid(row=4, column=1,pady=25)
+
 
 items_data = [
     {"title": "Item 1", "description": "A yummy snack"},
@@ -54,7 +55,10 @@ items_data = [
     {"title": "Item 3", "description": "Item 3"}
 ]
 
-for i, item_data in enumerate(items_data, start=1):
+item_images = [image1, image2, image3]  # Assuming you have image1, image2, and image3
+
+menu_images = []
+for i, (item_data, item_image) in enumerate(zip(items_data, item_images), start=1):
     item_frame = CTkFrame(master=menu_items, fg_color="#AAAAAA")
     item_title = CTkLabel(master=item_frame, text=item_data["title"], font=buttonFont, text_color="#0C0705")
     item_description = CTkLabel(master=item_frame, text=item_data["description"], font=textFont, text_color="#0C0705")
@@ -65,5 +69,10 @@ for i, item_data in enumerate(items_data, start=1):
     item_description.place(x=10, y=50)
     item_minus_button.place(x=10, y=150)
     item_plus_button.place(x=140, y=150)
-
+    
+    # Create menu images with different images for each iteration
+    menu_image = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=item_image)
+    menu_image.grid(row=i+1, column=1, pady=25)
+    menu_images.append(menu_image)
+    
 app.mainloop()
