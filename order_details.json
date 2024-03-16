@@ -48,5 +48,14 @@
         "email": "nothing",
         "address": "nothing",
         "timestamp": "2024-03-15 11:31:19"
+    },
+    {
+        "order": {
+            "dish1": 2
+        },
+        "total_price": "21.98",
+        "email": "thomas",
+        "address": "watkins",
+        "timestamp": "2024-03-16 17:39:17"
     }
 ]

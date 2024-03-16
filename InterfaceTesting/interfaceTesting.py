@@ -7,13 +7,10 @@ app.geometry("920x870")
 app.resizable(0,0)
 
 
-<<<<<<< HEAD
-=======
 def login_button():
     user_input = username_input.get()
     print(user_input)
 
->>>>>>> 41580b58457f607ac2b5186e257715543c9cdfd2
 #loading image data via PIl
 side_img_data = Image.open("InterfaceTesting/side-img.png")
 email_icon_data = Image.open("InterfaceTesting/email-icon.png")
