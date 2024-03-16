@@ -3,7 +3,7 @@ from PIL import Image
 from tkinter import font
 
 app = CTk()
-app.geometry("920x870")
+app.geometry("600x480")
 app.resizable(0,0)
 
 
