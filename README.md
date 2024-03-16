@@ -18,3 +18,6 @@ Students are to develop an appropriate solution to this problem. The software wi
 • Functionality
 • Intuitiveness and user help
 • Links between planning and implementation
+
+documentation for the customtkinter library used can be found at:
+https://customtkinter.tomschimansky.com/
