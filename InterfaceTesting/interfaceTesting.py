@@ -3,8 +3,9 @@ from PIL import Image
 from tkinter import font
 
 app = CTk()
-app.geometry("600x480")
+app.geometry("920x870")
 app.resizable(0,0)
+
 
 #loading image data via PIl
 side_img_data = Image.open("InterfaceTesting\side-img.png")
