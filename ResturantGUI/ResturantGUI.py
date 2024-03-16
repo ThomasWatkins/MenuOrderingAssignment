@@ -50,9 +50,9 @@ order_summary.place(x=580,y=70)
 
 
 items_data = [
-    {"title": "Item 1", "description": "A yummy snack"},
+    {"title": "Item 1", "description": "A big burrito"},
     {"title": "Item 2", "description": "A big burger"},
-    {"title": "Item 3", "description": "Item 3"}
+    {"title": "Item 3", "description": "small burger"}
 ]
 
 item_images = [image1, image2, image3]  # Assuming you have image1, image2, and image3
