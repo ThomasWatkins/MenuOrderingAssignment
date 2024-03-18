@@ -7,17 +7,47 @@ app = CTk()
 app.geometry("900x800")
 app.resizable(0,0)
 
-image1 = Image.open("ResturantGUI\\food_placeholder.jpg")
+#load Images -------------------------------------------------------------
+image1 = Image.open("ResturantGUI/food_placeholder.jpg")
 image1 = CTkImage(dark_image=image1, light_image=image1, size=(200, 160))
 
-image2 = Image.open("ResturantGUI\\food_placeholder2.jpg")
+image2 = Image.open("ResturantGUI/food_placeholder2.jpg")
 image2 = CTkImage(dark_image=image2, light_image=image2, size=(200, 160))
 
-image3 = Image.open("ResturantGUI\\food_placeholder3.jpg")
+image3 = Image.open("ResturantGUI/food_placeholder3.jpg")
 image3 = CTkImage(dark_image=image3, light_image=image3, size=(200, 160))
 
+image4 = Image.open("ResturantGUI/drink.png")
+image4 = CTkImage(dark_image=image4, light_image=image4, size=(200,160))
+#-------------------------------------------------------------------------
+
+#functions----------------------------------------------------------------
 def view_order_history():
     print("order history button pressed")
+
+def increase_quantity(item_index):
+    print("order added", item_index)
+    item_index = CTkLabel(master=order_summary, text="test", font=buttonFont, text_color="#0C0705")
+    item_index.place(x=10,y=0)
+
+def decrease_quantity(item_index):
+    print("order removed", item_index)
+    
+    
+def create_decrease_function(item_index):
+    print("Decrease index is", item_index)
+    def decrease():
+        decrease_quantity(item_index)
+    return decrease
+
+def create_increase_function(item_index):
+    print("Increase index is", item_index)
+    def increase():
+        increase_quantity(item_index)
+    return increase
+
+    
+
 
 #header frame
 header = CTkFrame(app, fg_color="#437B90",width=900, height=100, corner_radius=0)
@@ -50,23 +80,27 @@ order_summary.place(x=580,y=70)
 
 
 items_data = [
-    {"title": "Item 1", "description": "A big burrito"},
-    {"title": "Item 2", "description": "A big burger"},
-    {"title": "Item 3", "description": "small burger"}
+    {"title": "Item 1", "description": "A big burrito", "price": "$105"},
+    {"title": "Item 2", "description": "A big burger", "price": "$18"},
+    {"title": "Item 3", "description": "small burger", "price": "$15"},
+    {"title": "Item 4", "description": "drink", "price": "$10"}
 ]
 
-item_images = [image1, image2, image3]  # Assuming you have image1, image2, and image3
+item_images = [image1, image2, image3, image4]  # Assuming you have image1, image2, and image3
 
 menu_images = []
+
 for i, (item_data, item_image) in enumerate(zip(items_data, item_images), start=1):
-    item_frame = CTkFrame(master=menu_items, fg_color="#AAAAAA")
+    item_frame = CTkFrame(master=menu_items, fg_color="#DEEDF2")
     item_title = CTkLabel(master=item_frame, text=item_data["title"], font=buttonFont, text_color="#0C0705")
     item_description = CTkLabel(master=item_frame, text=item_data["description"], font=textFont, text_color="#0C0705")
-    item_plus_button = CTkButton(master=item_frame, text="+", width=50, height=30)
-    item_minus_button = CTkButton(master=item_frame, text="-", width=50, height=30)
+    item_price = CTkLabel(master=item_frame, text=item_data["price"], font=textFont, text_color="#0C0705")
+    item_plus_button = CTkButton(master=item_frame, text="+", width=50, height=30, command=create_increase_function(i))
+    item_minus_button = CTkButton(master=item_frame, text="-", width=50, height=30, command=create_decrease_function(i))
     item_frame.grid(row=i+1, column=2, pady=25, padx=10)
     item_title.place(x=10, y=10)
     item_description.place(x=10, y=50)
+    item_price.place(x=10,y=80)
     item_minus_button.place(x=10, y=150)
     item_plus_button.place(x=140, y=150)
     
