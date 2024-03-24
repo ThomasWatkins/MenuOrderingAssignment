@@ -5,6 +5,7 @@ from PIL import Image
 #set app dimensions and make a un-resizeable screen
 
 order = []
+payment_details = []
 total_price = 0
 app = CTk()
 app.geometry("900x800")
