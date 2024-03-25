@@ -1,8 +1,7 @@
 from customtkinter import *
 from PIL import Image
-
-
-#set app dimensions and make a un-resizeable screen
+import json
+import os
 
 order = []
 payment_details = []
@@ -11,29 +10,32 @@ app = CTk()
 app.geometry("900x800")
 app.resizable(0,0)
 
-#load Images -------------------------------------------------------------
-image1 = Image.open("ResturantGUI\French_Fries.png")
+#load Images ----------------------------------------------------------------------------------------------------
+image1 = Image.open("ResturantGUI/French_Fries.png")
 image1 = CTkImage(dark_image=image1, light_image=image1, size=(200, 160))
 
-image2 = Image.open("ResturantGUI\salad.png")
+image2 = Image.open("ResturantGUI/salad.png")
 image2 = CTkImage(dark_image=image2, light_image=image2, size=(200, 160))
 
-image3 = Image.open("ResturantGUI\Hot_dog.png")
+image3 = Image.open("ResturantGUI/Hot_dog.png")
 image3 = CTkImage(dark_image=image3, light_image=image3, size=(200, 160))
 
-image4 = Image.open("ResturantGUI\\tea_cup.png")
+image4 = Image.open("ResturantGUI/tea_cup.png")
 image4 = CTkImage(dark_image=image4, light_image=image4, size=(200,160))
 
-image5 = Image.open("ResturantGUI\lemonade.png")
+image5 = Image.open("ResturantGUI/lemonade.png")
 image5 = CTkImage(dark_image=image5, light_image=image5, size=(200,160))
 
-#Fonts -------------------------------------------------------------------
+#Fonts --------------------------------------------------------------------------------------------------------
 
 HeaderFont = CTkFont("Segoe UI Black", 38)
 buttonFont = CTkFont("Segoe UI Black", 24)
 textFont = CTkFont("Poppins", 18)
 orderFont = CTkFont("Poppins", 12)
 
+#Functions ----------------------------------------------------------------------------------------------------
+
+#create the main menu ordering window
 def create_main_window():
 
     global order_total
@@ -42,7 +44,7 @@ def create_main_window():
 
     header_text = CTkLabel(master=header, text="Newcastle Diner Co.", font=HeaderFont, text_color="#E6EAEE")
     order_history_button = CTkButton(master=header, text="View Order History", font=buttonFont, bg_color="transparent",fg_color="#183540",
-                                    hover_color="#2E6E87", corner_radius=5, command=view_order_history)
+                                    hover_color="#2E6E87", corner_radius=5, command=order_history_window)
     header_text.place(relx=0.01,rely=0.3)
     order_history_button.place(relx=0.7, rely=0.4)
 
@@ -75,11 +77,11 @@ def create_main_window():
     order_button.place(x=25, y=350)
 
     # Define item data individually-----------------------------------------------------
-    item1_data = {"title": "French Fries", "description": "Extra hot sauce with chicken", "price": "$15"}
-    item2_data = {"title": "Salad", "description": "Pasta and tomato combo", "price": "$18"}
-    item3_data = {"title": "Hot Dogs", "description": "Perfect Dog with Sauce", "price": "$15"}
-    item4_data = {"title": "Tea", "description": "A very nice drink", "price": "$10"}
-    item5_data = {"title": "Lemonade", "description": "Classic fresh lemonade", "price": "$6"}
+    item1_data = {"title": "French Fries", "description": "crispy chips", "price": "$15"}
+    item2_data = {"title": "Salad", "description": "Lettuce and tomato", "price": "$18"}
+    item3_data = {"title": "Hot Dogs", "description": "crispy bun", "price": "$15"}
+    item4_data = {"title": "Tea", "description": "Nice warm drink", "price": "$10"}
+    item5_data = {"title": "Lemonade", "description": "Fresh lemonade", "price": "$6"}
 
     # Define item images individually
     item1_image = image1
@@ -185,72 +187,122 @@ def create_main_window():
     update_total_price_display()
 
     app.mainloop()
+    
+#confirm order storing all parsed data into a JSON file
+def confirm_order(name, address, cardNumber, expiry, cvc, totalCost, orderDetails):
+    file_path = 'ResturantGUI/OrderDetails.json'
+    name = name.get()
+    address = address.get()
+    cardNumber = cardNumber.get()
+    expiry = expiry.get()
+    cvc = cvc.get()
+    
+    if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
+        with open(file_path, 'r') as file:
+            data = json.load(file)
+    else:
+        data = []
+    
+    data.append({
+        "name": name,
+        "address": address,
+        "cardNumber": cardNumber,
+        "expiry": expiry,
+        "cvc": cvc,
+        "totalCost": totalCost,
+        "orderDetails": orderDetails
+    })
+    
+    with open(file_path, 'w') as file:
+        json.dump(data, file, indent=4)
+        
+    print(f"Order for {name} has been added to {file_path}.")
 
+#takes all orders from JSON file and converts to a string to display in order history
+def format_orders_to_string(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            orders = json.load(file)
+            
+        order_strings = []
+        for order in orders:
+            order_string = f"""\nOrder for: {order["name"]}
+Address: {order["address"]}
+Card Number: {order["cardNumber"]}
+Expiry Date: {order["expiry"]}
+CVC: {order["cvc"]}
+Total Cost: ${order["totalCost"]}
+Order Details:\n{order["orderDetails"]}
+"""
+            order_strings.append(order_string)
+        
+        # Join the individual order strings with a "-------" separator
+        formatted_string = "------------------\n".join(order_strings)
+        return formatted_string
+    except FileNotFoundError:
+        return "File not found."
+    except json.decoder.JSONDecodeError:
+        return "No previous orders found."
+    except Exception as e:
+        return f"An error occurred: {e}"
 
-def view_order_history():
-    print("order history button pressed")
-    print(order)
-
-# Function to create a string representation of the order
+#Create a string representation of the current order to display
 def create_order_string():
     order_string = ""
     for item in order:
         order_string += f"{item['title']} - ({item['price']})\n"
     return order_string
 
-# Function to calculate the total price of the order
+#Calculate the total price of the order
 def calculate_total_price():
     total_price = 0
     for item in order:
         total_price += int(item['price'][1:])  # Extracting the price without the "$" sign and summing it up
     return total_price
 
-# Function to update the GUI with the current order
+#Update the GUI with the current order whenever an item is added
 def update_order_display():
     order_text = create_order_string()
     order_display.configure(text=order_text)
 
-# Function to update the total price whenever an item is added or removed from the order
+#Update the total price whenever an item is added or removed from the order
 def update_total_price():
     global total_price
     total_price = calculate_total_price()
     order_total.configure(text=f"TOTAL: ${total_price}")
-    print("Total price updated:", total_price)
 
-# Function to add an item to the order
+#Add an item to the order, calling GUI updates after adding
 def add_to_order(item_data):
     order.append(item_data)
     update_order_display()
     update_total_price_display()
-    print("Item added to order:", item_data)
 
-# Function to remove an item from the order
+#Remove an item from the order, calling GUI updates after adding
 def remove_from_order(item_data):
     if item_data in order:
         order.remove(item_data)
         update_order_display()
         update_total_price_display()
-        print("Item removed from order:", item_data)
 
-# Function to update the GUI with the current total price
+#Update the GUI with the current total price
 def update_total_price_display():
     update_total_price()
-    print("update_total_price_display called.")
 
-
+#Create and display the complete order screen, parsing the order summary to display
 def complete_order(order_summary):
     global app, complete_order_window
     app.withdraw()
     complete_order_window = CTkToplevel(app)
     complete_order_window.geometry("600x800")
+    complete_order_window.resizable(0,0)
     
     #header -----
     order_header = CTkFrame(complete_order_window, fg_color="#437B90", width=800, height=100, corner_radius=0)
     order_header.place(x=0, y=0)
-    order_header_text = CTkLabel(master=order_header, text="Newcastle Diner Co.", font=HeaderFont)
+    order_header_text = CTkLabel(master=order_header, text="Newcastle Diner Co.", font=HeaderFont, text_color="#E6EAEE")
     order_header_text.place(x=25, y=25)
     go_back_button = CTkButton(master=order_header, text="Go Back", font=buttonFont, bg_color="transparent", fg_color="#183540",
-                               hover_color="#2E6E87", corner_radius=5, command=reopen_main_window)
+                               hover_color="#2E6E87", corner_radius=5, command=lambda: reopen_main_window(complete_order_window))
     go_back_button.place(x=430, y=30)
     
     #main frame ----
@@ -274,14 +326,76 @@ def complete_order(order_summary):
     update_total_price()  # Update the total price first
     order_total = CTkLabel(master=payment_details_frame, text=f"TOTAL: ${total_price}", font=HeaderFont, text_color="#183540")
     order_total.place(x=25, y=300)
+
+    name = StringVar()
+    name_input_label = CTkLabel(master=payment_details_frame, text="Name", font=buttonFont,text_color="#183540")
+    name_input_label.place(x=315,y=30)
+    name_input = CTkEntry(master=payment_details_frame, placeholder_text="Full Name", textvariable=name)
+    name_input.place(x=315,y=70)
+
+    delivery_adress = StringVar()
+    delivery_adress_label = CTkLabel(master=payment_details_frame, text="Delivery Adress",text_color="#183540", font=buttonFont)
+    delivery_adress_label.place(x=315,y=100)
+    delivery_adress_input = CTkEntry(master=payment_details_frame, placeholder_text="Delivery Adress", width=220,textvariable=delivery_adress )
+    delivery_adress_input.place(x=315,y=140)
+
+    card_details = StringVar()
+    card_details_label = CTkLabel(master=payment_details_frame, text="Card Number",text_color="#183540", font=buttonFont)
+    card_details_label.place(x=315,y=170)
+    card_details_input = CTkEntry(master=payment_details_frame, placeholder_text="1234 1234 1234 1234", width=220, textvariable=card_details)
+    card_details_input.place(x=315,y=210)
+
+    expiry_date = StringVar()
+    expiry_date_label = CTkLabel(master=payment_details_frame,text="Expiry Date",text_color="#183540", font=buttonFont)
+    expiry_date_label.place(x=315, y=240)
+    expiry_date_input = CTkEntry(master=payment_details_frame, textvariable=expiry_date, placeholder_text="12/34", width=80)
+    expiry_date_input.place(x=315,y=280)
+
+    cvc = StringVar()
+    cvc_label = CTkLabel(master=payment_details_frame,text="CVC",text_color="#183540", font=buttonFont )
+    cvc_label.place(x=315,y=310)
+    cvc_input = CTkEntry(master=payment_details_frame, width=80, textvariable=cvc)
+    cvc_input.place(x=315,y=340)
+
+    confirm_button = CTkButton(master=payment_details_frame, text="Confirm Order",font=buttonFont, bg_color="transparent", fg_color="#183540",
+                                hover_color="#2E6E87", corner_radius=5,command=lambda: confirm_order(name,delivery_adress,card_details,expiry_date,cvc,calculate_total_price(),create_order_string()))
+    confirm_button.place(x=315,y=400)
     
-    complete_order_window.protocol("WM_DELETE_WINDOW", reopen_main_window)
+    complete_order_window.protocol("WM_DELETE_WINDOW", lambda: reopen_main_window(complete_order_window))
 
+#Create and display the order history window, displaying all the JSON data in a formatted scrollable window
+def order_history_window():
+    app.withdraw()
+    order_history_window = CTkToplevel(app)
+    order_history_window.geometry("600x800")
+    order_history_window.resizable(0,0)
+    #header -----
+    history_header = CTkFrame(order_history_window, fg_color="#437B90", width=800, height=100, corner_radius=0)
+    history_header.place(x=0, y=0)
+    history_header_text = CTkLabel(master=history_header, text="Newcastle Diner Co.", font=HeaderFont, text_color="#E6EAEE")
+    history_header_text.place(x=25, y=25)
+    go_back_button = CTkButton(master=history_header, text="Go Back", font=buttonFont, bg_color="transparent", fg_color="#183540",
+                               hover_color="#2E6E87", corner_radius=5, command=lambda: reopen_main_window(order_history_window))
+    go_back_button.place(x=430, y=30)
 
-def reopen_main_window():
-    global app, complete_order_window, order_total
+    history_window_main = CTkFrame(order_history_window, fg_color="#A9CEDE", width=800, height=700, corner_radius=0)
+    history_window_main.place(x=0, y=100)
+
+    order_history = CTkLabel(history_window_main, text="ORDER HISTORY", font=HeaderFont, text_color="#183540")
+    order_history.place(x=45,y=15)
+
+    history_scrollable = CTkScrollableFrame(master=history_window_main,fg_color="#DEEDF2",scrollbar_button_color="#183540", width=470, height=530, corner_radius=25)
+    history_scrollable.place(x=45,y=70)
+
+    formatted_history = format_orders_to_string("ResturantGUI/OrderDetails.json")
+    order_history_label = CTkLabel(master=history_scrollable,  text=formatted_history, font=textFont, text_color="#183540")
+    order_history_label.pack()
+
+    order_history_window.protocol("WM_DELETE_WINDOW", lambda: reopen_main_window(order_history_window))
+
+#reopen main window after subwindow is closed, pasrsing the subwindow name as the variable to destroy
+def reopen_main_window(windowName):
     app.deiconify()
-    complete_order_window.destroy()  # Close the second window
-
+    windowName.destroy()  # Close the second window
 
 create_main_window()

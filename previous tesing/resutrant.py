@@ -4,7 +4,7 @@ from datetime import datetime
 
 def print_order_history():
     try:
-        with open("order_details.json", "r") as json_file:
+        with open("previous tesing/order_details.json", "r") as json_file:
             orders = json.load(json_file)
             print("Order History:")
             print("==============")
@@ -25,7 +25,7 @@ def print_order_history():
 
 def append_order(order_details):
     try:
-        with open("order_details.json", "r+") as json_file:
+        with open("previous tesing/order_details.json", "r+") as json_file:
             # Load existing orders
             orders = json.load(json_file)
             
