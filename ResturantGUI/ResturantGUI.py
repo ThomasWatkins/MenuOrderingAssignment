@@ -3,6 +3,7 @@ from PIL import Image
 import json
 import os
 
+current_error_label = None
 order = []
 payment_details = []
 total_price = 0
@@ -32,6 +33,7 @@ HeaderFont = CTkFont("Segoe UI Black", 38)
 buttonFont = CTkFont("Segoe UI Black", 24)
 textFont = CTkFont("Poppins", 18)
 orderFont = CTkFont("Poppins", 12)
+errorFont = CTkFont("")
 
 #Functions ----------------------------------------------------------------------------------------------------
 
@@ -77,11 +79,11 @@ def create_main_window():
     order_button.place(x=25, y=350)
 
     # Define item data individually-----------------------------------------------------
-    item1_data = {"title": "French Fries", "description": "crispy chips", "price": "$15"}
-    item2_data = {"title": "Salad", "description": "Lettuce and tomato", "price": "$18"}
-    item3_data = {"title": "Hot Dogs", "description": "crispy bun", "price": "$15"}
-    item4_data = {"title": "Tea", "description": "Nice warm drink", "price": "$10"}
-    item5_data = {"title": "Lemonade", "description": "Fresh lemonade", "price": "$6"}
+    item1_data = {"title": "French Fries", "description": "crispy chips", "price": "$100"}
+    item2_data = {"title": "Salad", "description": "Lettuce and tomato", "price": "$10"}
+    item3_data = {"title": "Hot Dogs", "description": "crispy bun", "price": "$6"}
+    item4_data = {"title": "Tea", "description": "Nice warm drink", "price": "$5"}
+    item5_data = {"title": "Lemonade", "description": "Fresh lemonade", "price": "$4"}
 
     # Define item images individually
     item1_image = image1
@@ -98,8 +100,8 @@ def create_main_window():
     item1_title = CTkLabel(master=item1_frame, text=item1_data["title"], font=buttonFont, text_color="#0C0705")
     item1_description = CTkLabel(master=item1_frame, text=item1_data["description"], font=textFont, text_color="#0C0705")
     item1_price = CTkLabel(master=item1_frame, text=item1_data["price"], font=textFont, text_color="#0C0705")
-    item1_plus_button = CTkButton(master=item1_frame, text="+", width=50, height=30, command=lambda: add_to_order(item1_data))
-    item1_minus_button = CTkButton(master=item1_frame, text="-", width=50, height=30, command=lambda: remove_from_order(item1_data))
+    item1_plus_button = CTkButton(master=item1_frame, text="+",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: add_to_order(item1_data))
+    item1_minus_button = CTkButton(master=item1_frame, text="-",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: remove_from_order(item1_data))
     item1_frame.grid(row=2, column=2, pady=25, padx=10)
     item1_title.place(x=10, y=10)
     item1_description.place(x=10, y=50)
@@ -116,8 +118,8 @@ def create_main_window():
     item2_title = CTkLabel(master=item2_frame, text=item2_data["title"], font=buttonFont, text_color="#0C0705")
     item2_description = CTkLabel(master=item2_frame, text=item2_data["description"], font=textFont, text_color="#0C0705")
     item2_price = CTkLabel(master=item2_frame, text=item2_data["price"], font=textFont, text_color="#0C0705")
-    item2_plus_button = CTkButton(master=item2_frame, text="+", width=50, height=30, command=lambda: add_to_order(item2_data))
-    item2_minus_button = CTkButton(master=item2_frame, text="-", width=50, height=30, command=lambda: remove_from_order(item2_data))
+    item2_plus_button = CTkButton(master=item2_frame, text="+",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: add_to_order(item2_data))
+    item2_minus_button = CTkButton(master=item2_frame, text="-",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: remove_from_order(item2_data))
     item2_frame.grid(row=3, column=2, pady=25, padx=10)
     item2_title.place(x=10, y=10)
     item2_description.place(x=10, y=50)
@@ -134,8 +136,8 @@ def create_main_window():
     item3_title = CTkLabel(master=item3_frame, text=item3_data["title"], font=buttonFont, text_color="#0C0705")
     item3_description = CTkLabel(master=item3_frame, text=item3_data["description"], font=textFont, text_color="#0C0705")
     item3_price = CTkLabel(master=item3_frame, text=item3_data["price"], font=textFont, text_color="#0C0705")
-    item3_plus_button = CTkButton(master=item3_frame, text="+", width=50, height=30, command=lambda: add_to_order(item3_data))
-    item3_minus_button = CTkButton(master=item3_frame, text="-", width=50, height=30, command=lambda: remove_from_order(item3_data))
+    item3_plus_button = CTkButton(master=item3_frame, text="+",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: add_to_order(item3_data))
+    item3_minus_button = CTkButton(master=item3_frame, text="-", fg_color="#437B90", hover_color="#2E6E87",width=50, height=30, command=lambda: remove_from_order(item3_data))
     item3_frame.grid(row=4, column=2, pady=25, padx=10)
     item3_title.place(x=10, y=10)
     item3_description.place(x=10, y=50)
@@ -152,8 +154,8 @@ def create_main_window():
     item4_title = CTkLabel(master=item4_frame, text=item4_data["title"], font=buttonFont, text_color="#0C0705")
     item4_description = CTkLabel(master=item4_frame, text=item4_data["description"], font=textFont, text_color="#0C0705")
     item4_price = CTkLabel(master=item4_frame, text=item4_data["price"], font=textFont, text_color="#0C0705")
-    item4_plus_button = CTkButton(master=item4_frame, text="+", width=50, height=30, command=lambda: add_to_order(item4_data))
-    item4_minus_button = CTkButton(master=item4_frame, text="-", width=50, height=30, command=lambda: remove_from_order(item4_data))
+    item4_plus_button = CTkButton(master=item4_frame, text="+",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: add_to_order(item4_data))
+    item4_minus_button = CTkButton(master=item4_frame, text="-",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: remove_from_order(item4_data))
     item4_frame.grid(row=5, column=2, pady=25, padx=10)
     item4_title.place(x=10, y=10)
     item4_description.place(x=10, y=50)
@@ -170,8 +172,8 @@ def create_main_window():
     item5_title = CTkLabel(master=item5_frame, text=item5_data["title"], font=buttonFont, text_color="#0C0705")
     item5_description = CTkLabel(master=item5_frame, text=item5_data["description"], font=textFont, text_color="#0C0705")
     item5_price = CTkLabel(master=item5_frame, text=item5_data["price"], font=textFont, text_color="#0C0705")
-    item5_plus_button = CTkButton(master=item5_frame, text="+", width=50, height=30, command=lambda: add_to_order(item5_data))
-    item5_minus_button = CTkButton(master=item5_frame, text="-", width=50, height=30, command=lambda: remove_from_order(item5_data))
+    item5_plus_button = CTkButton(master=item5_frame, text="+",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: add_to_order(item5_data))
+    item5_minus_button = CTkButton(master=item5_frame, text="-",fg_color="#437B90", hover_color="#2E6E87", width=50, height=30, command=lambda: remove_from_order(item5_data))
     item5_frame.grid(row=6, column=2, pady=25, padx=10)
     item5_title.place(x=10, y=10)
     item5_description.place(x=10, y=50)
@@ -187,15 +189,46 @@ def create_main_window():
     update_total_price_display()
 
     app.mainloop()
+
+#check valid entry details before confirming order
+def check_valid_order(name, address, cardNumber, expiry, cvc, totalCost, orderDetails):
+    # Check if any parameter is missing or empty
+    if not all([name, address, cardNumber, expiry, cvc]):
+        display_invalid_details("Missing or empty parameter(s)")
+        return False
+
+    # Remove spaces from cardNumber
+    cardNumber = cardNumber.replace(" ", "")
+
+    if not isinstance(cardNumber, str) or len(cardNumber) != 16 or not cardNumber.isdigit():
+        display_invalid_details("Invalid card number")
+        return False
     
+    if not isinstance(expiry, str) or expiry[2]!="/" or len(expiry) != 5 or "/" not in expiry:
+        display_invalid_details("Invalid expiry date format")
+        return False
+    
+    if not isinstance(cvc, str) or len(cvc) != 3 or not cvc.isdigit():
+        display_invalid_details("Invalid CVC")
+        return False
+
+    # Assuming totalCost is a numeric value, you can add more specific checks if needed
+    if not isinstance(totalCost, (int, float)):
+        display_invalid_details("Invalid total cost")
+        return False
+    
+    # Check if totalCost is zero, indicating no items were selected
+    if totalCost == 0:
+        display_invalid_details("No items selected")
+        return False
+    
+    # If all checks pass, call confirm_order
+    return True, confirm_order(name, address, cardNumber, expiry, cvc, totalCost, orderDetails),confirmation_window()
+
 #confirm order storing all parsed data into a JSON file
 def confirm_order(name, address, cardNumber, expiry, cvc, totalCost, orderDetails):
+    global order
     file_path = 'ResturantGUI/OrderDetails.json'
-    name = name.get()
-    address = address.get()
-    cardNumber = cardNumber.get()
-    expiry = expiry.get()
-    cvc = cvc.get()
     
     if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
         with open(file_path, 'r') as file:
@@ -217,6 +250,10 @@ def confirm_order(name, address, cardNumber, expiry, cvc, totalCost, orderDetail
         json.dump(data, file, indent=4)
         
     print(f"Order for {name} has been added to {file_path}.")
+    order = []
+    update_order_display()
+    update_total_price()
+    update_total_price_display()
 
 #takes all orders from JSON file and converts to a string to display in order history
 def format_orders_to_string(file_path):
@@ -290,7 +327,7 @@ def update_total_price_display():
 
 #Create and display the complete order screen, parsing the order summary to display
 def complete_order(order_summary):
-    global app, complete_order_window
+    global app, complete_order_window, payment_details_frame
     app.withdraw()
     complete_order_window = CTkToplevel(app)
     complete_order_window.geometry("600x800")
@@ -322,43 +359,38 @@ def complete_order(order_summary):
     order_summary = CTkLabel(master=order_summary_window, text=create_order_string(), font=orderFont, text_color="#0C0705")
     order_summary.grid(row=1)
     
-    # Create the order total label
-    update_total_price()  # Update the total price first
+    update_total_price()  
     order_total = CTkLabel(master=payment_details_frame, text=f"TOTAL: ${total_price}", font=HeaderFont, text_color="#183540")
     order_total.place(x=25, y=300)
 
-    name = StringVar()
     name_input_label = CTkLabel(master=payment_details_frame, text="Name", font=buttonFont,text_color="#183540")
     name_input_label.place(x=315,y=30)
-    name_input = CTkEntry(master=payment_details_frame, placeholder_text="Full Name", textvariable=name)
+    name_input = CTkEntry(master=payment_details_frame, placeholder_text="Full Name", fg_color="#A9CEDE",text_color="#183540")
     name_input.place(x=315,y=70)
 
-    delivery_adress = StringVar()
     delivery_adress_label = CTkLabel(master=payment_details_frame, text="Delivery Adress",text_color="#183540", font=buttonFont)
     delivery_adress_label.place(x=315,y=100)
-    delivery_adress_input = CTkEntry(master=payment_details_frame, placeholder_text="Delivery Adress", width=220,textvariable=delivery_adress )
+    delivery_adress_input = CTkEntry(master=payment_details_frame, placeholder_text="Delivery Adress", width=220,fg_color="#A9CEDE",text_color="#183540" )
     delivery_adress_input.place(x=315,y=140)
 
-    card_details = StringVar()
     card_details_label = CTkLabel(master=payment_details_frame, text="Card Number",text_color="#183540", font=buttonFont)
     card_details_label.place(x=315,y=170)
-    card_details_input = CTkEntry(master=payment_details_frame, placeholder_text="1234 1234 1234 1234", width=220, textvariable=card_details)
+    card_details_input = CTkEntry(master=payment_details_frame, placeholder_text="1234 1234 1234 1234", width=220,fg_color="#A9CEDE",text_color="#183540")
     card_details_input.place(x=315,y=210)
 
-    expiry_date = StringVar()
     expiry_date_label = CTkLabel(master=payment_details_frame,text="Expiry Date",text_color="#183540", font=buttonFont)
     expiry_date_label.place(x=315, y=240)
-    expiry_date_input = CTkEntry(master=payment_details_frame, textvariable=expiry_date, placeholder_text="12/34", width=80)
+    expiry_date_input = CTkEntry(master=payment_details_frame, placeholder_text="12/34",fg_color="#A9CEDE", width=80,text_color="#183540")
     expiry_date_input.place(x=315,y=280)
 
-    cvc = StringVar()
     cvc_label = CTkLabel(master=payment_details_frame,text="CVC",text_color="#183540", font=buttonFont )
     cvc_label.place(x=315,y=310)
-    cvc_input = CTkEntry(master=payment_details_frame, width=80, textvariable=cvc)
+    cvc_input = CTkEntry(master=payment_details_frame, width=80,fg_color="#A9CEDE",placeholder_text="123",text_color="#183540")
     cvc_input.place(x=315,y=340)
 
     confirm_button = CTkButton(master=payment_details_frame, text="Confirm Order",font=buttonFont, bg_color="transparent", fg_color="#183540",
-                                hover_color="#2E6E87", corner_radius=5,command=lambda: confirm_order(name,delivery_adress,card_details,expiry_date,cvc,calculate_total_price(),create_order_string()))
+                                hover_color="#2E6E87", corner_radius=5,
+                                command=lambda: check_valid_order(name_input.get(),delivery_adress_input.get(),card_details_input.get(),expiry_date_input.get(),cvc_input.get(),calculate_total_price(),create_order_string()))
     confirm_button.place(x=315,y=400)
     
     complete_order_window.protocol("WM_DELETE_WINDOW", lambda: reopen_main_window(complete_order_window))
@@ -393,9 +425,42 @@ def order_history_window():
 
     order_history_window.protocol("WM_DELETE_WINDOW", lambda: reopen_main_window(order_history_window))
 
+def confirmation_window():
+    global confirmation_window, complete_order_window
+    complete_order_window.withdraw()
+    app.withdraw()
+    confirmation_window_instance = CTkToplevel(app)  # Renamed variable
+    confirmation_window_instance.geometry("600x400")
+    confirmation_window_instance.resizable(0,0)
+    confirmation_header = CTkFrame(confirmation_window_instance, fg_color="#437B90", width=600, height=100, corner_radius=0)
+    confirmation_header.place(x=0, y=0)
+    confirmation_header_text = CTkLabel(confirmation_header, text="Newcastle Diner Co.", font=HeaderFont, text_color="#E6EAEE", bg_color="transparent", fg_color="transparent")
+    confirmation_header_text.place(x=25, y=25)
+
+    confirmation_window_main = CTkFrame(confirmation_window_instance, fg_color="#A9CEDE", width=600, height=300, corner_radius=0)
+    confirmation_window_main.place(x=0, y=100)
+    confirmation_message = CTkLabel(confirmation_window_main, text="Order Confirmed", font=buttonFont)
+    confirmation_message.place(x=200,y=100)
+    close_button = CTkButton(confirmation_window_main, text="Back to Main Menu", font=buttonFont, command=lambda: reopen_main_window(confirmation_window_instance, complete_order_window))
+    close_button.place(x=200,y=200)
+
+    confirmation_window_instance.protocol("WM_DELETE_WINDOW", lambda: reopen_main_window(confirmation_window_instance, complete_order_window))
+
 #reopen main window after subwindow is closed, pasrsing the subwindow name as the variable to destroy
-def reopen_main_window(windowName):
-    app.deiconify()
-    windowName.destroy()  # Close the second window
+def reopen_main_window(*windows):
+    global confirmation_window, order_history_window
+    for window in windows:  # Iterate over each window passed to the function
+        window.destroy()    # Close each window
+    app.deiconify()          # Re-show the main window
+
+def display_invalid_details(error):
+    global current_error_label
+    # Hide or destroy the current error label if it exists
+    if current_error_label is not None:
+        current_error_label.destroy()
+    
+    # Create a new label for the error message
+    current_error_label = CTkLabel(master=payment_details_frame, text="Invalid details: " + error, text_color="#183540", font=buttonFont)
+    current_error_label.place(x=10, y=450)
 
 create_main_window()
