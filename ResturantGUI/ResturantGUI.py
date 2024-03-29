@@ -12,19 +12,19 @@ app.geometry("900x800")
 app.resizable(0,0)
 
 #load Images ----------------------------------------------------------------------------------------------------
-image1 = Image.open("ResturantGUI/French_Fries.png")
+image1 = Image.open("ResturantGUI\French_Fries.png")
 image1 = CTkImage(dark_image=image1, light_image=image1, size=(200, 160))
 
-image2 = Image.open("ResturantGUI/salad.png")
+image2 = Image.open("ResturantGUI\salad.png")
 image2 = CTkImage(dark_image=image2, light_image=image2, size=(200, 160))
 
-image3 = Image.open("ResturantGUI/Hot_dog.png")
+image3 = Image.open("ResturantGUI\Hot_dog.png")
 image3 = CTkImage(dark_image=image3, light_image=image3, size=(200, 160))
 
-image4 = Image.open("ResturantGUI/tea_cup.png")
+image4 = Image.open("ResturantGUI\\tea_cup.png")
 image4 = CTkImage(dark_image=image4, light_image=image4, size=(200,160))
 
-image5 = Image.open("ResturantGUI/lemonade.png")
+image5 = Image.open("ResturantGUI\lemonade.png")
 image5 = CTkImage(dark_image=image5, light_image=image5, size=(200,160))
 
 #Fonts --------------------------------------------------------------------------------------------------------
@@ -33,7 +33,7 @@ HeaderFont = CTkFont("Segoe UI Black", 38)
 buttonFont = CTkFont("Segoe UI Black", 24)
 textFont = CTkFont("Poppins", 18)
 orderFont = CTkFont("Poppins", 12)
-errorFont = CTkFont("")
+errorFont = CTkFont("Segoe UI Black", 18)
 
 #Functions ----------------------------------------------------------------------------------------------------
 
@@ -53,6 +53,12 @@ def create_main_window():
     #main frame-----------------------------------------------------
     Main_menu = CTkFrame(app, fg_color="#A9CEDE", width=900, height=700, corner_radius=0)
     Main_menu.place(x=0,y=100)
+
+    #instructions label-----------------------------------------------------
+    instructionsLabel = CTkLabel(Main_menu, text="Chose items by pressing \nthe + icon then \n complete order for payment", font=errorFont, text_color="#183540" )
+    instructionsLabel.place(x=605,y=480)
+    instructionsLabel2 = CTkLabel(Main_menu, text="Scroll for more menu choices", font=errorFont, text_color="#183540" )
+    instructionsLabel2.place(x=55,y=40)
 
     #menu items frame-----------------------------------------------------
     menu_items = CTkScrollableFrame(master=Main_menu,fg_color="#DEEDF2",scrollbar_button_color="#183540", width=470, height=530, corner_radius=25)
@@ -388,6 +394,9 @@ def complete_order(order_summary):
     cvc_input = CTkEntry(master=payment_details_frame, width=80,fg_color="#A9CEDE",placeholder_text="123",text_color="#183540")
     cvc_input.place(x=315,y=340)
 
+    instructionsLabel3 = CTkLabel(payment_details_frame, text="enter valid card information and \n user information to proceed with  your order", font=errorFont, text_color="#183540" )
+    instructionsLabel3.place(x=90,y=510)
+
     confirm_button = CTkButton(master=payment_details_frame, text="Confirm Order",font=buttonFont, bg_color="transparent", fg_color="#183540",
                                 hover_color="#2E6E87", corner_radius=5,
                                 command=lambda: check_valid_order(name_input.get(),delivery_adress_input.get(),card_details_input.get(),expiry_date_input.get(),cvc_input.get(),calculate_total_price(),create_order_string()))
@@ -439,10 +448,13 @@ def confirmation_window():
 
     confirmation_window_main = CTkFrame(confirmation_window_instance, fg_color="#A9CEDE", width=600, height=300, corner_radius=0)
     confirmation_window_main.place(x=0, y=100)
-    confirmation_message = CTkLabel(confirmation_window_main, text="Order Confirmed", font=buttonFont)
+    confirmation_message = CTkLabel(confirmation_window_main, text="Order Confirmed!", font=buttonFont,text_color="#183540")
     confirmation_message.place(x=200,y=100)
-    close_button = CTkButton(confirmation_window_main, text="Back to Main Menu", font=buttonFont, command=lambda: reopen_main_window(confirmation_window_instance, complete_order_window))
-    close_button.place(x=200,y=200)
+    confirmation_message22 = CTkLabel(confirmation_window_main, text="Order can be viewed in the Order History menu", font=buttonFont, anchor="center", compound="center",text_color="#183540")
+    confirmation_message22.place(x=20,y=150)
+    close_button = CTkButton(confirmation_window_main, text="Back to Main Menu", font=buttonFont, bg_color="transparent", fg_color="#183540", hover_color="#2E6E87",
+                              corner_radius=5, command=lambda: reopen_main_window(confirmation_window_instance, complete_order_window))
+    close_button.place(x=185,y=200)
 
     confirmation_window_instance.protocol("WM_DELETE_WINDOW", lambda: reopen_main_window(confirmation_window_instance, complete_order_window))
 
@@ -460,7 +472,7 @@ def display_invalid_details(error):
         current_error_label.destroy()
     
     # Create a new label for the error message
-    current_error_label = CTkLabel(master=payment_details_frame, text="Invalid details: " + error, text_color="#183540", font=buttonFont)
+    current_error_label = CTkLabel(master=payment_details_frame, text="Invalid details: " + error, text_color="#183540", font=errorFont)
     current_error_label.place(x=10, y=450)
 
 create_main_window()
