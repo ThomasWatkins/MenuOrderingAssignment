@@ -472,7 +472,7 @@ def display_invalid_details(error):
         current_error_label.destroy()
     
     # Create a new label for the error message
-    current_error_label = CTkLabel(master=payment_details_frame, text="Invalid details: " + error, text_color="#183540", font=errorFont)
+    current_error_label = CTkLabel(master=payment_details_frame, text="Invalid details: " + error, text_color="#CC0000", font=errorFont)
     current_error_label.place(x=10, y=450)
 
 create_main_window()
