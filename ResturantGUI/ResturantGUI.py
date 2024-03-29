@@ -79,7 +79,7 @@ def create_main_window():
     order_button.place(x=25, y=350)
 
     # Define item data individually-----------------------------------------------------
-    item1_data = {"title": "French Fries", "description": "crispy chips", "price": "$100"}
+    item1_data = {"title": "French Fries", "description": "crispy chips", "price": "$7"}
     item2_data = {"title": "Salad", "description": "Lettuce and tomato", "price": "$10"}
     item3_data = {"title": "Hot Dogs", "description": "crispy bun", "price": "$6"}
     item4_data = {"title": "Tea", "description": "Nice warm drink", "price": "$5"}
