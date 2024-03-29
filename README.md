@@ -1,4 +1,8 @@
 # MenuOrderingAssignment
+
+project started on the 13/03/2024
+project completed on the 29/03/2024
+
 School project for making a GUI python program to make orders from a menu and store customer order information in a database
 
 **NOTICE BEFORE RUNNING PROGRAM**

@@ -1,3 +1,8 @@
+#Created by Thomas Watkins for School Assignment 1
+#Creation: 14/03/2024
+#Completion: 29/03/2024
+#SEE README.md FOR FURTHER DOCUMENTATION/SETUP PROCESS
+
 from customtkinter import *
 from PIL import Image
 import json
@@ -84,14 +89,14 @@ def create_main_window():
                          hover_color="#2E6E87", corner_radius=5, command=lambda: complete_order(order_summary))
     order_button.place(x=25, y=350)
 
-    # Define item data individually-----------------------------------------------------
+    # Define item data -----------------------------------------------------
     item1_data = {"title": "French Fries", "description": "crispy chips", "price": "$7"}
     item2_data = {"title": "Salad", "description": "Lettuce and tomato", "price": "$10"}
     item3_data = {"title": "Hot Dogs", "description": "crispy bun", "price": "$6"}
     item4_data = {"title": "Tea", "description": "Nice warm drink", "price": "$5"}
     item5_data = {"title": "Lemonade", "description": "Fresh lemonade", "price": "$4"}
 
-    # Define item images individually
+    # Define item images 
     item1_image = image1
     item2_image = image2
     item3_image = image3
@@ -101,7 +106,7 @@ def create_main_window():
     # Create menu images list
     menu_images = []
 
-    # Create item 1
+
     item1_frame = CTkFrame(master=menu_items, fg_color="#DEEDF2")
     item1_title = CTkLabel(master=item1_frame, text=item1_data["title"], font=buttonFont, text_color="#0C0705")
     item1_description = CTkLabel(master=item1_frame, text=item1_data["description"], font=textFont, text_color="#0C0705")
@@ -114,12 +119,12 @@ def create_main_window():
     item1_price.place(x=10, y=80)
     item1_minus_button.place(x=10, y=150)
     item1_plus_button.place(x=140, y=150)
-    # Create menu image for item 1
+
     menu_image1 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=item1_image)
     menu_image1.grid(row=2, column=1, pady=25)
     menu_images.append(menu_image1)
 
-    # Create item 2
+
     item2_frame = CTkFrame(master=menu_items, fg_color="#DEEDF2")
     item2_title = CTkLabel(master=item2_frame, text=item2_data["title"], font=buttonFont, text_color="#0C0705")
     item2_description = CTkLabel(master=item2_frame, text=item2_data["description"], font=textFont, text_color="#0C0705")
@@ -132,12 +137,11 @@ def create_main_window():
     item2_price.place(x=10, y=80)
     item2_minus_button.place(x=10, y=150)
     item2_plus_button.place(x=140, y=150)
-    # Create menu image for item 2
+
     menu_image2 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=item2_image)
     menu_image2.grid(row=3, column=1, pady=25)
     menu_images.append(menu_image2)
 
-    # Create item 3
     item3_frame = CTkFrame(master=menu_items, fg_color="#DEEDF2")
     item3_title = CTkLabel(master=item3_frame, text=item3_data["title"], font=buttonFont, text_color="#0C0705")
     item3_description = CTkLabel(master=item3_frame, text=item3_data["description"], font=textFont, text_color="#0C0705")
@@ -150,12 +154,12 @@ def create_main_window():
     item3_price.place(x=10, y=80)
     item3_minus_button.place(x=10, y=150)
     item3_plus_button.place(x=140, y=150)
-    # Create menu image for item 3
+
     menu_image3 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=item3_image)
     menu_image3.grid(row=4, column=1, pady=25)
     menu_images.append(menu_image3)
 
-    # Create item 4
+
     item4_frame = CTkFrame(master=menu_items, fg_color="#DEEDF2")
     item4_title = CTkLabel(master=item4_frame, text=item4_data["title"], font=buttonFont, text_color="#0C0705")
     item4_description = CTkLabel(master=item4_frame, text=item4_data["description"], font=textFont, text_color="#0C0705")
@@ -168,12 +172,12 @@ def create_main_window():
     item4_price.place(x=10, y=80)
     item4_minus_button.place(x=10, y=150)
     item4_plus_button.place(x=140, y=150)
-    # Create menu image for item 4
+
     menu_image4 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=item4_image)
     menu_image4.grid(row=5, column=1, pady=25)
     menu_images.append(menu_image4)
 
-    # Create item 5
+
     item5_frame = CTkFrame(master=menu_items, fg_color="#DEEDF2")
     item5_title = CTkLabel(master=item5_frame, text=item5_data["title"], font=buttonFont, text_color="#0C0705")
     item5_description = CTkLabel(master=item5_frame, text=item5_data["description"], font=textFont, text_color="#0C0705")
@@ -186,7 +190,7 @@ def create_main_window():
     item5_price.place(x=10, y=80)
     item5_minus_button.place(x=10, y=150)
     item5_plus_button.place(x=140, y=150)
-    # Create menu image for item 5
+
     menu_image5 = CTkLabel(master=menu_items, text="", text_color="#0C0705", image=item5_image)
     menu_image5.grid(row=6, column=1, pady=25)
     menu_images.append(menu_image5)
@@ -198,7 +202,7 @@ def create_main_window():
 
 #check valid entry details before confirming order
 def check_valid_order(name, address, cardNumber, expiry, cvc, totalCost, orderDetails):
-    # Check if any parameter is missing or empty
+    # Check if any entry is missing or empty
     if not all([name, address, cardNumber, expiry, cvc]):
         display_invalid_details("Missing or empty parameter(s)")
         return False
@@ -218,12 +222,10 @@ def check_valid_order(name, address, cardNumber, expiry, cvc, totalCost, orderDe
         display_invalid_details("Invalid CVC")
         return False
 
-    # Assuming totalCost is a numeric value, you can add more specific checks if needed
     if not isinstance(totalCost, (int, float)):
         display_invalid_details("Invalid total cost")
         return False
     
-    # Check if totalCost is zero, indicating no items were selected
     if totalCost == 0:
         display_invalid_details("No items selected")
         return False
@@ -279,7 +281,7 @@ Order Details:\n{order["orderDetails"]}
 """
             order_strings.append(order_string)
         
-        # Join the individual order strings with a "-------" separator
+        # Join the individual order strings with a "-------" seperating orders
         formatted_string = "------------------\n".join(order_strings)
         return formatted_string
     except FileNotFoundError:
@@ -300,7 +302,7 @@ def create_order_string():
 def calculate_total_price():
     total_price = 0
     for item in order:
-        total_price += int(item['price'][1:])  # Extracting the price without the "$" sign and summing it up
+        total_price += int(item['price'][1:])  # Extracting the price without the "$" sign and adding it up
     return total_price
 
 #Update the GUI with the current order whenever an item is added
@@ -467,11 +469,11 @@ def reopen_main_window(*windows):
 
 def display_invalid_details(error):
     global current_error_label
-    # Hide or destroy the current error label if it exists
+    #Destroy the current error label if it exists
     if current_error_label is not None:
         current_error_label.destroy()
     
-    # Create a new label for the error message
+    #Create a new label for the error message
     current_error_label = CTkLabel(master=payment_details_frame, text="Invalid details: " + error, text_color="#CC0000", font=errorFont)
     current_error_label.place(x=10, y=450)
 
