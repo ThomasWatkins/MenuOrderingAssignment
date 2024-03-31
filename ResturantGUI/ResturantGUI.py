@@ -14,22 +14,23 @@ payment_details = []
 total_price = 0
 app = CTk()
 app.geometry("900x800")
+app.title("Newcastle Resturant Co.")
 app.resizable(0,0)
 
 #load Images ----------------------------------------------------------------------------------------------------
-image1 = Image.open("ResturantGUI\French_Fries.png")
+image1 = Image.open("ResturantGUI/French_Fries.png")
 image1 = CTkImage(dark_image=image1, light_image=image1, size=(200, 160))
 
-image2 = Image.open("ResturantGUI\salad.png")
+image2 = Image.open("ResturantGUI/salad.png")
 image2 = CTkImage(dark_image=image2, light_image=image2, size=(200, 160))
 
-image3 = Image.open("ResturantGUI\Hot_dog.png")
+image3 = Image.open("ResturantGUI/Hot_dog.png")
 image3 = CTkImage(dark_image=image3, light_image=image3, size=(200, 160))
 
-image4 = Image.open("ResturantGUI\\tea_cup.png")
+image4 = Image.open("ResturantGUI/tea_cup.png")
 image4 = CTkImage(dark_image=image4, light_image=image4, size=(200,160))
 
-image5 = Image.open("ResturantGUI\lemonade.png")
+image5 = Image.open("ResturantGUI/lemonade.png")
 image5 = CTkImage(dark_image=image5, light_image=image5, size=(200,160))
 
 #Fonts --------------------------------------------------------------------------------------------------------
@@ -340,6 +341,7 @@ def complete_order(order_summary):
     complete_order_window = CTkToplevel(app)
     complete_order_window.geometry("600x800")
     complete_order_window.resizable(0,0)
+    complete_order_window.title("Complete Order")
     
     #header -----
     order_header = CTkFrame(complete_order_window, fg_color="#437B90", width=800, height=100, corner_radius=0)
@@ -412,6 +414,7 @@ def order_history_window():
     order_history_window = CTkToplevel(app)
     order_history_window.geometry("600x800")
     order_history_window.resizable(0,0)
+    order_history_window.title("Order History")
     #header -----
     history_header = CTkFrame(order_history_window, fg_color="#437B90", width=800, height=100, corner_radius=0)
     history_header.place(x=0, y=0)
@@ -443,6 +446,7 @@ def confirmation_window():
     confirmation_window_instance = CTkToplevel(app)  # Renamed variable
     confirmation_window_instance.geometry("600x400")
     confirmation_window_instance.resizable(0,0)
+    confirmation_window_instance.title("Order Confirmed")
     confirmation_header = CTkFrame(confirmation_window_instance, fg_color="#437B90", width=600, height=100, corner_radius=0)
     confirmation_header.place(x=0, y=0)
     confirmation_header_text = CTkLabel(confirmation_header, text="Newcastle Diner Co.", font=HeaderFont, text_color="#E6EAEE", bg_color="transparent", fg_color="transparent")
